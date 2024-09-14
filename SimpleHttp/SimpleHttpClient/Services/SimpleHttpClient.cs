@@ -6,6 +6,13 @@ public interface ISimpleHttpClient
     Task<TResult?> GetAsync<TResult>(string relativePath);
     Task<string> PostAsync<TResult>(string relativeRoute, TResult payload);
     Task<TResponse?> PostAsync<TResult, TResponse>(string relativeRoute, TResult payload);
+    Task<string> PatchAsync<TResult>(string relativeRoute, TResult payload);
+    Task<TResponse?> PatchAsync<TResult, TResponse>(string relativeRoute, TResult payload);
+    
+    Task<string> PutAsync<TResult>(string relativeRoute, TResult payload);
+    Task<TResponse?> PutAsync<TResult, TResponse>(string relativeRoute, TResult payload);
+    Task<string> DeleteAsync(string relativeRoute);
+    Task<string> DeleteAsync<TResult>(string relativeRoute, TResult payload);
 }
 
 public class SimpleHttpClient : ISimpleHttpClient
@@ -113,9 +120,8 @@ public class SimpleHttpClient : ISimpleHttpClient
             responseBody = await response.Content.ReadAsStringAsync();
 
             response.EnsureSuccessStatusCode();
-
-            TResponse? result = JsonConvert.DeserializeObject<TResponse>(json);
-
+            
+            TResponse? result = JsonConvert.DeserializeObject<TResponse>(responseBody);
             return result;
         }
         catch (HttpRequestException ex)
@@ -138,7 +144,7 @@ public class SimpleHttpClient : ISimpleHttpClient
 
             statusCode = response.StatusCode;
             responseBody = await response.Content.ReadAsStringAsync();
-
+            
             response.EnsureSuccessStatusCode();
             return responseBody;
         }
@@ -164,10 +170,105 @@ public class SimpleHttpClient : ISimpleHttpClient
             responseBody = await response.Content.ReadAsStringAsync();
 
             response.EnsureSuccessStatusCode();
-
-            TResponse? result = JsonConvert.DeserializeObject<TResponse>(json);
-
+            TResponse? result = JsonConvert.DeserializeObject<TResponse>(responseBody);
             return result;
+        }
+        catch (HttpRequestException ex)
+        {
+            LogHttpRequestException(ex);
+            throw new SimpleHttpRequestException(statusCode, responseBody);
+        }
+    }
+
+    public async Task<string> PutAsync<TResult>(string relativePath, TResult payload)
+    {
+        HttpStatusCode statusCode = HttpStatusCode.OK;
+        string responseBody = string.Empty;
+
+        try
+        {
+            string json = JsonConvert.SerializeObject(payload);
+            StringContent content = new(json, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await _httpClient.PutAsync(relativePath, content);
+
+            statusCode = response.StatusCode;
+            responseBody = await response.Content.ReadAsStringAsync();
+
+            response.EnsureSuccessStatusCode();
+            return responseBody;
+        }
+        catch (HttpRequestException ex)
+        {
+            LogHttpRequestException(ex);
+            throw new SimpleHttpRequestException(statusCode, responseBody);
+        }
+    }
+
+    public async Task<TResponse?> PutAsync<TResult, TResponse>(string relativePath, TResult payload)
+    {
+        HttpStatusCode statusCode = HttpStatusCode.OK;
+        string responseBody = string.Empty;
+
+        try
+        {
+            string json = JsonConvert.SerializeObject(payload);
+            StringContent content = new(json, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await _httpClient.PutAsync(relativePath, content);
+
+            statusCode = response.StatusCode;
+            responseBody = await response.Content.ReadAsStringAsync();
+
+            response.EnsureSuccessStatusCode();
+
+            TResponse? result = JsonConvert.DeserializeObject<TResponse>(responseBody);
+            return result;
+        }
+        catch (HttpRequestException ex)
+        {
+            LogHttpRequestException(ex);
+            throw new SimpleHttpRequestException(statusCode, responseBody);
+        }
+    }
+
+    public async Task<string> DeleteAsync(string relativePath)
+    {
+        HttpStatusCode statusCode = HttpStatusCode.OK;
+        string responseBody = string.Empty;
+
+        try
+        {
+            HttpResponseMessage response = await _httpClient.DeleteAsync(relativePath);
+
+            statusCode = response.StatusCode;
+            responseBody = await response.Content.ReadAsStringAsync();
+
+            response.EnsureSuccessStatusCode();
+            return responseBody;
+        }
+        catch (HttpRequestException ex)
+        {
+            LogHttpRequestException(ex);
+            throw new SimpleHttpRequestException(statusCode, responseBody);
+        }
+    }
+
+    public async Task<string> DeleteAsync<TResult>(string relativePath, TResult payload)
+    {
+        HttpStatusCode statusCode = HttpStatusCode.OK;
+        string responseBody = string.Empty;
+
+        try
+        {
+            string json = JsonConvert.SerializeObject(payload);
+            StringContent content = new(json, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await _httpClient.PutAsync(relativePath, content);
+
+            statusCode = response.StatusCode;
+            responseBody = await response.Content.ReadAsStringAsync();
+
+            response.EnsureSuccessStatusCode();
+            
+            return responseBody;
         }
         catch (HttpRequestException ex)
         {

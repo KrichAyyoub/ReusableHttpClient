@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleHttpClient", "SimpleHttpClient\SimpleHttpClient.csproj", "{4F734599-84CA-43BD-B0B5-07ACFF448884}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleHttpClient.Console", "SimpleHttpClient.Console\SimpleHttpClient.Console.csproj", "{478AC2C1-A9AF-4710-B77A-A546E0176EC1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleHttpClient.Tests", "SimpleHttpClient.Tests\SimpleHttpClient.Tests.csproj", "{F21853E7-3E64-4120-BCE3-F10EF49BCDD6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,13 @@ Global
 		{4F734599-84CA-43BD-B0B5-07ACFF448884}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F734599-84CA-43BD-B0B5-07ACFF448884}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F734599-84CA-43BD-B0B5-07ACFF448884}.Release|Any CPU.Build.0 = Release|Any CPU
+		{478AC2C1-A9AF-4710-B77A-A546E0176EC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{478AC2C1-A9AF-4710-B77A-A546E0176EC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{478AC2C1-A9AF-4710-B77A-A546E0176EC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{478AC2C1-A9AF-4710-B77A-A546E0176EC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F21853E7-3E64-4120-BCE3-F10EF49BCDD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F21853E7-3E64-4120-BCE3-F10EF49BCDD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F21853E7-3E64-4120-BCE3-F10EF49BCDD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F21853E7-3E64-4120-BCE3-F10EF49BCDD6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

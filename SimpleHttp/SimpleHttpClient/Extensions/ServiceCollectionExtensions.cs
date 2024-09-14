@@ -2,7 +2,7 @@
 
 public static class ServiceCollectionExtensions
 {
-    public static void AddHttpClientService(this IServiceCollection services, string baseAddress)
+    public static void AddSimpleHttpClient(this IServiceCollection services, string baseAddress)
     {
         services.AddHttpClient<ISimpleHttpClient, Services.SimpleHttpClient>(client =>
         {
