@@ -1,82 +1,120 @@
-## SimpleHttpClient
+# SimpleHttpClient NuGet Package
 
-The \`SimpleHttpClient\` NuGet package provides a simplified and reusable HTTP client for performing common HTTP operations like \`GET\`, \`POST\`, \`PATCH\`, \`PUT\`, and \`DELETE\`. It abstracts HTTP communication logic and offers seamless integration with Dependency Injection (DI), and is easy to mock for unit testing.
-
-## Table of Contents
-
-- [Installation](#installation)
-- [Features](#features)
-- [Interface Definition](#interface-definition)
-- [Usage Examples](#usage-examples)
-  - [GET Request](#get-request)
-- [SimpleHttpClient](#simplehttpclient)
+`SimpleHttpClient` is a reusable HTTP client abstraction that simplifies making HTTP requests (`GET`, `POST`, `PATCH`, `PUT`, `DELETE`). It integrates easily with Dependency Injection (DI) in .NET and provides a mockable interface for unit testing.
 
 ## Installation
 
-To install the \`SimpleHttpClient\` package, run the following command in the Package Manager Console:
+Install the package via the .NET CLI:
 
-\`\`\`powershell
+```bash
+dotnet add package SimpleHttpClient
+```
+
+Or via NuGet Package Manager:
+
+```powershell
 Install-Package SimpleHttpClient
-\`\`\`
+```
+
+Register `SimpleHttpClient` in your DI container:
+
+```csharp
+services.AddSimpleHttpClient(baseAddress:"https://api.dev");
+```
 
 ## Features
 
-- Simplified HTTP client for common operations
-- Supports \`GET\`, \`POST\`, \`PATCH\`, \`PUT\`, and \`DELETE\` methods
-- Seamless integration with Dependency Injection (DI)
-- Easy to mock for unit testing
-- Handles common HTTP errors and exceptions
+- **Supports common HTTP methods**: `GET`, `POST`, `PATCH`, `PUT`, `DELETE`
+- **Handles query parameters** in `GET` requests
+- **Generic response deserialization** for strongly-typed models
+- **Custom exception handling** via `SimpleHttpRequestException`
+- **Easily testable** using the `ISimpleHttpClient` interface
 
-## Interface Definition
+## Interface
 
-The \`SimpleHttpClient\` interface defines the following methods:
-
-\`\`\`csharp
+```csharp
 public interface ISimpleHttpClient
 {
-    Task<HttpResponseMessage> GetAsync(string requestUri);
-    Task<HttpResponseMessage> PostAsync(string requestUri, HttpContent content);
-    Task<HttpResponseMessage> PatchAsync(string requestUri, HttpContent content);
-    Task<HttpResponseMessage> PutAsync(string requestUri, HttpContent content);
-    Task<HttpResponseMessage> DeleteAsync(string requestUri);
+    Task<TResult?> GetAsync<TResult>(string relativePath, Dictionary<string, string> queryParams);
+    Task<TResult?> GetAsync<TResult>(string relativePath);
+    Task<string> PostAsync<TResult>(string relativeRoute, TResult payload);
+    Task<TResponse?> PostAsync<TResult, TResponse>(string relativeRoute, TResult payload);
+    Task<string> PatchAsync<TResult>(string relativeRoute, TResult payload);
+    Task<TResponse?> PatchAsync<TResult, TResponse>(string relativeRoute, TResult payload);
+    Task<string> PutAsync<TResult>(string relativeRoute, TResult payload);
+    Task<TResponse?> PutAsync<TResult, TResponse>(string relativeRoute, TResult payload);
+    Task<string> DeleteAsync(string relativeRoute);
+    Task<string> DeleteAsync<TResult>(string relativeRoute, TResult payload);
 }
-\`\`\`
+```
 
 ## Usage Examples
 
 ### GET Request
 
-\`\`\`csharp
-var response = await simpleHttpClient.GetAsync(\"https://api.example.com/data\");
-\`\`\`
+```csharp
+var response = await simpleHttpClient.GetAsync<MyResponseModel>("/api/data");
+```
+
+With query parameters:
+
+```csharp
+var queryParams = new Dictionary<string, string> { { "id", "123" } };
+var response = await simpleHttpClient.GetAsync<MyResponseModel>("/api/data", queryParams);
+```
 
 ### POST Request
 
-\`\`\`csharp
-var content = new StringContent(jsonData, Encoding.UTF8, \"application/json\");
-var response = await simpleHttpClient.PostAsync(\"https://api.example.com/data\", content);
-\`\`\`
+```csharp
+var payload = new MyRequestModel { Data = "Sample data" };
+var response = await simpleHttpClient.PostAsync<MyRequestModel, MyResponseModel>("/api/data", payload);
+```
 
 ### PATCH Request
 
-\`\`\`csharp
-var content = new StringContent(jsonData, Encoding.UTF8, \"application/json\");
-var response = await simpleHttpClient.PatchAsync(\"https://api.example.com/data\", content);
-\`\`\`
+```csharp
+var payload = new MyRequestModel { Data = "Updated data" };
+await simpleHttpClient.PatchAsync("/api/data/123", payload);
+```
 
 ### PUT Request
 
-\`\`\`csharp
-var content = new StringContent(jsonData, Encoding.UTF8, \"application/json\");
-var response = await simpleHttpClient.PutAsync(\"https://api.example.com/data\", content);
-\`\`\`
+```csharp
+var payload = new MyRequestModel { Data = "New data" };
+await simpleHttpClient.PutAsync("/api/data/123", payload);
+```
 
 ### DELETE Request
 
-\`\`\`csharp
-var response = await simpleHttpClient.DeleteAsync(\"https://api.example.com/data\");
-\`\`\`
+```csharp
+await simpleHttpClient.DeleteAsync("/api/data/123");
+```
 
 ## Exception Handling
 
-The \`SimpleHttpClient\` handles common HTTP errors and exceptions, providing meaningful error messages and status codes. It throws custom exceptions for different HTTP status codes, making it easier to handle errors in your application.
+`SimpleHttpRequestException` captures the HTTP status code and response body:
+
+```csharp
+try
+{
+    var result = await simpleHttpClient.GetAsync<MyResponseModel>("/api/data/123");
+}
+catch (SimpleHttpRequestException ex)
+{
+    Console.WriteLine(`Error: ${ex.StatusCode} - ${ex.Message}`);
+}
+```
+
+## Testing
+
+Mock `ISimpleHttpClient` using libraries like `NSubstitute` for unit testing:
+
+```csharp
+var mockClient = Substitute.For<ISimpleHttpClient>();
+mockClient.GetAsync<MyResponseModel>("/api/data")
+    .Returns(new MyResponseModel { Data = "Sample data" });
+```
+
+## License
+
+Licensed under the [MIT License](LICENSE)."
