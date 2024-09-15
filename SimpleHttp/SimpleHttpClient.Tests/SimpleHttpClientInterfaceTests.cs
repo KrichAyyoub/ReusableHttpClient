@@ -107,7 +107,7 @@ public class SimpleHttpClientInterfaceTests
         var expectedException = new SimpleHttpRequestException(HttpStatusCode.BadRequest, "Network error");
 
         _simpleHttpClient.GetAsync<TestResponse>(relativePath)
-            .Returns<Task<TestResponse?>>(x => throw expectedException);
+            .Returns<Task<TestResponse?>>(_ => throw expectedException);
 
         // Act
         Func<Task> act = async () => await _simpleHttpClient.GetAsync<TestResponse>(relativePath);
