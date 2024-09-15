@@ -1,4 +1,4 @@
-﻿namespace SimpleHttpClient.Exceptions;
+﻿namespace StupidHttpClient.Exceptions;
 
 public class SimpleHttpRequestException : HttpRequestException
 {

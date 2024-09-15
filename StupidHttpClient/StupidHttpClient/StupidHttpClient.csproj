@@ -2,6 +2,11 @@
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
+        <PackageId>StupidHttpClient</PackageId>
+        <Authors>KrichAyyoub</Authors>
+        <Description>Nuget package with simple/generic reusable http client service.</Description>
+        <PackageTags>HttpClient;SimpleHttpClient;.NET</PackageTags>
+        <RepositoryUrl>https://github.com/KrichAyyoub/SimpleHttpClient</RepositoryUrl>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

@@ -1,6 +1,8 @@
-﻿namespace SimpleHttpClient.Services;
+﻿using StupidHttpClient.Exceptions;
 
-public interface ISimpleHttpClient
+namespace StupidHttpClient.Services;
+
+public interface IStupidHttpClient
 {
     Task<TResult?> GetAsync<TResult>(string relativePath, Dictionary<string, string> queryParams);
     Task<TResult?> GetAsync<TResult>(string relativePath);
@@ -15,12 +17,12 @@ public interface ISimpleHttpClient
     Task<string> DeleteAsync<TResult>(string relativeRoute, TResult payload);
 }
 
-public class SimpleHttpClient : ISimpleHttpClient
+public class StupidHttpClient : IStupidHttpClient
 {
-    private readonly ILogger<SimpleHttpClient> _logger;
+    private readonly ILogger<StupidHttpClient> _logger;
     private readonly HttpClient _httpClient;
 
-    public SimpleHttpClient(ILogger<SimpleHttpClient> logger, HttpClient httpClient)
+    public StupidHttpClient(ILogger<StupidHttpClient> logger, HttpClient httpClient)
     {
         _logger = logger;
         _httpClient = httpClient;

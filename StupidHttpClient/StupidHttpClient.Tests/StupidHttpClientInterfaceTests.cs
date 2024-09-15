@@ -1,12 +1,12 @@
-namespace SimpleHttpClient.Tests;
+namespace StupidHttpClient.Tests;
 
-public class SimpleHttpClientInterfaceTests
+public class StupidHttpClientInterfaceTests
 {
-    private readonly ISimpleHttpClient _simpleHttpClient;
+    private readonly IStupidHttpClient _stupidHttpClient;
 
-    public SimpleHttpClientInterfaceTests()
+    public StupidHttpClientInterfaceTests()
     {
-        _simpleHttpClient = Substitute.For<ISimpleHttpClient>();
+        _stupidHttpClient = Substitute.For<IStupidHttpClient>();
     }
 
     [Fact]
@@ -16,11 +16,11 @@ public class SimpleHttpClientInterfaceTests
         var relativePath = "/test-path";
         var expectedResponse = new TestResponse { Data = "TestData" };
 
-        _simpleHttpClient.GetAsync<TestResponse>(relativePath)!
+        _stupidHttpClient.GetAsync<TestResponse>(relativePath)!
             .Returns(Task.FromResult(expectedResponse));
 
         // Act
-        var result = await _simpleHttpClient.GetAsync<TestResponse>(relativePath);
+        var result = await _stupidHttpClient.GetAsync<TestResponse>(relativePath);
 
         // Assert
         result.Should().NotBeNull();
@@ -35,11 +35,11 @@ public class SimpleHttpClientInterfaceTests
         var queryParams = new Dictionary<string, string> { { "key", "value" } };
         var expectedResponse = new TestResponse { Data = "TestData" };
 
-        _simpleHttpClient.GetAsync<TestResponse>(relativePath, queryParams)!
+        _stupidHttpClient.GetAsync<TestResponse>(relativePath, queryParams)!
             .Returns(Task.FromResult(expectedResponse));
 
         // Act
-        var result = await _simpleHttpClient.GetAsync<TestResponse>(relativePath, queryParams);
+        var result = await _stupidHttpClient.GetAsync<TestResponse>(relativePath, queryParams);
 
         // Assert
         result.Should().NotBeNull();
@@ -54,11 +54,11 @@ public class SimpleHttpClientInterfaceTests
         var payload = new TestRequest { Data = "TestData" };
         var expectedResponse = "response body";
 
-        _simpleHttpClient.PostAsync(relativePath, payload)
+        _stupidHttpClient.PostAsync(relativePath, payload)
             .Returns(Task.FromResult(expectedResponse));
 
         // Act
-        var result = await _simpleHttpClient.PostAsync(relativePath, payload);
+        var result = await _stupidHttpClient.PostAsync(relativePath, payload);
 
         // Assert
         result.Should().Be(expectedResponse);
@@ -72,11 +72,11 @@ public class SimpleHttpClientInterfaceTests
         var payload = new TestRequest { Data = "TestData" };
         var expectedResponse = "patched response";
 
-        _simpleHttpClient.PatchAsync(relativePath, payload)
+        _stupidHttpClient.PatchAsync(relativePath, payload)
             .Returns(Task.FromResult(expectedResponse));
 
         // Act
-        var result = await _simpleHttpClient.PatchAsync(relativePath, payload);
+        var result = await _stupidHttpClient.PatchAsync(relativePath, payload);
 
         // Assert
         result.Should().Be(expectedResponse);
@@ -89,11 +89,11 @@ public class SimpleHttpClientInterfaceTests
         var relativePath = "/test-path";
         var expectedResponse = "deleted";
 
-        _simpleHttpClient.DeleteAsync(relativePath)
+        _stupidHttpClient.DeleteAsync(relativePath)
             .Returns(Task.FromResult(expectedResponse));
 
         // Act
-        var result = await _simpleHttpClient.DeleteAsync(relativePath);
+        var result = await _stupidHttpClient.DeleteAsync(relativePath);
 
         // Assert
         result.Should().Be(expectedResponse);
@@ -106,11 +106,11 @@ public class SimpleHttpClientInterfaceTests
         var relativePath = "/test-path";
         var expectedException = new SimpleHttpRequestException(HttpStatusCode.BadRequest, "Network error");
 
-        _simpleHttpClient.GetAsync<TestResponse>(relativePath)
+        _stupidHttpClient.GetAsync<TestResponse>(relativePath)
             .Returns<Task<TestResponse?>>(_ => throw expectedException);
 
         // Act
-        Func<Task> act = async () => await _simpleHttpClient.GetAsync<TestResponse>(relativePath);
+        Func<Task> act = async () => await _stupidHttpClient.GetAsync<TestResponse>(relativePath);
 
         // Assert
         await act.Should().ThrowAsync<SimpleHttpRequestException>();
@@ -124,11 +124,11 @@ public class SimpleHttpClientInterfaceTests
         var payload = new TestRequest { Data = "TestData" };
         var expectedResponse = "put response";
 
-        _simpleHttpClient.PutAsync(relativePath, payload)
+        _stupidHttpClient.PutAsync(relativePath, payload)
             .Returns(Task.FromResult(expectedResponse));
 
         // Act
-        var result = await _simpleHttpClient.PutAsync(relativePath, payload);
+        var result = await _stupidHttpClient.PutAsync(relativePath, payload);
 
         // Assert
         result.Should().Be(expectedResponse);

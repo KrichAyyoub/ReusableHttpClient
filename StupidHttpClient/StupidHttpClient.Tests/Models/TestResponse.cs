@@ -1,4 +1,4 @@
-﻿namespace SimpleHttpClient.Tests.Models;
+﻿namespace StupidHttpClient.Tests.Models;
 
 public class TestResponse
 {

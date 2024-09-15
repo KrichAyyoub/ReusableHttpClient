@@ -1,25 +1,25 @@
-# SimpleHttpClient NuGet Package
+# StupidHttpClient NuGet Package
 
-`SimpleHttpClient` is a reusable HTTP client abstraction that simplifies making HTTP requests (`GET`, `POST`, `PATCH`, `PUT`, `DELETE`). It integrates easily with Dependency Injection (DI) in .NET and provides a mockable interface for unit testing.
+`StupidHttpClient` is a reusable HTTP client abstraction that simplifies making HTTP requests (`GET`, `POST`, `PATCH`, `PUT`, `DELETE`). It integrates easily with Dependency Injection (DI) in .NET and provides a mockable interface for unit testing.
 
 ## Installation
 
 Install the package via the .NET CLI:
 
 ```bash
-dotnet add package SimpleHttpClient
+dotnet add package StupidHttpClient
 ```
 
 Or via NuGet Package Manager:
 
 ```powershell
-Install-Package SimpleHttpClient
+Install-Package StupidHttpClient
 ```
 
-Register `SimpleHttpClient` in your DI container:
+Register `StupidHttpClient` in your DI container:
 
 ```csharp
-services.AddSimpleHttpClient(baseAddress:"https://api.dev");
+services.AddStupidHttpClient(baseAddress:"https://api.dev");
 ```
 
 ## Features
@@ -27,13 +27,13 @@ services.AddSimpleHttpClient(baseAddress:"https://api.dev");
 - **Supports common HTTP methods**: `GET`, `POST`, `PATCH`, `PUT`, `DELETE`
 - **Handles query parameters** in `GET` requests
 - **Generic response deserialization** for strongly-typed models
-- **Custom exception handling** via `SimpleHttpRequestException`
-- **Easily testable** using the `ISimpleHttpClient` interface
+- **Custom exception handling** via `StupidHttpRequestException`
+- **Easily testable** using the `IStupidHttpClient` interface
 
 ## Interface
 
 ```csharp
-public interface ISimpleHttpClient
+public interface IStupidHttpClient
 {
     Task<TResult?> GetAsync<TResult>(string relativePath, Dictionary<string, string> queryParams);
     Task<TResult?> GetAsync<TResult>(string relativePath);
@@ -53,53 +53,53 @@ public interface ISimpleHttpClient
 ### GET Request
 
 ```csharp
-var response = await simpleHttpClient.GetAsync<MyResponseModel>("/api/data");
+var response = await StupidHttpClient.GetAsync<MyResponseModel>("/api/data");
 ```
 
 With query parameters:
 
 ```csharp
 var queryParams = new Dictionary<string, string> { { "id", "123" } };
-var response = await simpleHttpClient.GetAsync<MyResponseModel>("/api/data", queryParams);
+var response = await StupidHttpClient.GetAsync<MyResponseModel>("/api/data", queryParams);
 ```
 
 ### POST Request
 
 ```csharp
 var payload = new MyRequestModel { Data = "Sample data" };
-var response = await simpleHttpClient.PostAsync<MyRequestModel, MyResponseModel>("/api/data", payload);
+var response = await StupidHttpClient.PostAsync<MyRequestModel, MyResponseModel>("/api/data", payload);
 ```
 
 ### PATCH Request
 
 ```csharp
 var payload = new MyRequestModel { Data = "Updated data" };
-await simpleHttpClient.PatchAsync("/api/data/123", payload);
+await StupidHttpClient.PatchAsync("/api/data/123", payload);
 ```
 
 ### PUT Request
 
 ```csharp
 var payload = new MyRequestModel { Data = "New data" };
-await simpleHttpClient.PutAsync("/api/data/123", payload);
+await StupidHttpClient.PutAsync("/api/data/123", payload);
 ```
 
 ### DELETE Request
 
 ```csharp
-await simpleHttpClient.DeleteAsync("/api/data/123");
+await StupidHttpClient.DeleteAsync("/api/data/123");
 ```
 
 ## Exception Handling
 
-`SimpleHttpRequestException` captures the HTTP status code and response body:
+`StupidHttpRequestException` captures the HTTP status code and response body:
 
 ```csharp
 try
 {
-    var result = await simpleHttpClient.GetAsync<MyResponseModel>("/api/data/123");
+    var result = await StupidHttpClient.GetAsync<MyResponseModel>("/api/data/123");
 }
-catch (SimpleHttpRequestException ex)
+catch (StupidHttpRequestException ex)
 {
     Console.WriteLine(`Error: ${ex.StatusCode} - ${ex.Message}`);
 }
@@ -107,10 +107,10 @@ catch (SimpleHttpRequestException ex)
 
 ## Testing
 
-Mock `ISimpleHttpClient` using libraries like `NSubstitute` for unit testing:
+Mock `IStupidHttpClient` using libraries like `NSubstitute` for unit testing:
 
 ```csharp
-var mockClient = Substitute.For<ISimpleHttpClient>();
+var mockClient = Substitute.For<IStupidHttpClient>();
 mockClient.GetAsync<MyResponseModel>("/api/data")
     .Returns(new MyResponseModel { Data = "Sample data" });
 ```

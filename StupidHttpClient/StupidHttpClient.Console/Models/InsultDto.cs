@@ -1,4 +1,4 @@
-﻿namespace SimpleHttpClient.Console.Models;
+﻿namespace StupidHttpClient.Console.Models;
 
 public class InsultDto
 {

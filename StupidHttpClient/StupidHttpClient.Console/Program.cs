@@ -1,11 +1,11 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 ServiceCollection serviceCollection = new ServiceCollection();
-serviceCollection.AddSimpleHttpClient("https://evilinsult.com");
+serviceCollection.AddStupidHttpClient("https://evilinsult.com");
 ServiceProvider services = serviceCollection.BuildServiceProvider();
 
-ISimpleHttpClient simpleHttpClient = services.GetRequiredService<ISimpleHttpClient>();
+IStupidHttpClient stupidHttpClient = services.GetRequiredService<IStupidHttpClient>();
 
-InsultDto? result = await simpleHttpClient.GetAsync<InsultDto>("generate_insult.php?lang=fr&type=json");
+InsultDto? result = await stupidHttpClient.GetAsync<InsultDto>("generate_insult.php?lang=fr&type=json");
 
 Console.WriteLine($"{JsonConvert.SerializeObject(result)}");

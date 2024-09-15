@@ -23,7 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\SimpleHttpClient\SimpleHttpClient.csproj" />
+      <ProjectReference Include="..\StupidHttpClient\StupidHttpClient.csproj" />
     </ItemGroup>
 
 </Project>

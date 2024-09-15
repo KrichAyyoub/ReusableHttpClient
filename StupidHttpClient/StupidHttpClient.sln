@@ -1,10 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleHttpClient", "SimpleHttpClient\SimpleHttpClient.csproj", "{4F734599-84CA-43BD-B0B5-07ACFF448884}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StupidHttpClient", "StupidHttpClient\StupidHttpClient.csproj", "{4F734599-84CA-43BD-B0B5-07ACFF448884}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleHttpClient.Console", "SimpleHttpClient.Console\SimpleHttpClient.Console.csproj", "{478AC2C1-A9AF-4710-B77A-A546E0176EC1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StupidHttpClient.Console", "StupidHttpClient.Console\StupidHttpClient.Console.csproj", "{478AC2C1-A9AF-4710-B77A-A546E0176EC1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleHttpClient.Tests", "SimpleHttpClient.Tests\SimpleHttpClient.Tests.csproj", "{F21853E7-3E64-4120-BCE3-F10EF49BCDD6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StupidHttpClient.Tests", "StupidHttpClient.Tests\StupidHttpClient.Tests.csproj", "{F21853E7-3E64-4120-BCE3-F10EF49BCDD6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
