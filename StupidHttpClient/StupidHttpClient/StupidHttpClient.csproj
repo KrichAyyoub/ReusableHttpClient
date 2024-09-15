@@ -7,6 +7,8 @@
         <Description>Nuget package with simple/generic reusable http client service.</Description>
         <PackageTags>HttpClient;SimpleHttpClient;.NET</PackageTags>
         <RepositoryUrl>https://github.com/KrichAyyoub/SimpleHttpClient</RepositoryUrl>
+        <PackageReadmeFile>readme.md</PackageReadmeFile>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -16,6 +18,14 @@
       <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
       <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="readme.md">
+        <Pack>True</Pack>
+        <PackagePath>\</PackagePath>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>
