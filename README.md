@@ -19,7 +19,7 @@ Install-Package StupidHttpClient
 Register `StupidHttpClient` in your DI container:
 
 ```csharp
-services.AddStupidHttpClient(baseAddress:"https://api.dev");
+services.AddStupidHttpClient(baseAddress:"https://api.restful-api.dev");
 ```
 
 ## Features

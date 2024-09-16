@@ -19,7 +19,7 @@ Install-Package StupidHttpClient
 Register `StupidHttpClient` in your DI container:
 
 ```csharp
-services.AddStupidHttpClient(baseAddress:"https://api.dev");
+services.AddStupidHttpClient(baseAddress:"https://api.restful-api.dev");
 ```
 
 ## Features
@@ -53,13 +53,6 @@ public interface IStupidHttpClient
 
 ```csharp
 var response = await StupidHttpClient.GetAsync<MyResponseModel>("/api/data");
-```
-
-With query parameters:
-
-```csharp
-var queryParams = new Dictionary<string, string> { { "id", "123" } };
-var response = await StupidHttpClient.GetAsync<MyResponseModel>("/api/data", queryParams);
 ```
 
 ### POST Request
