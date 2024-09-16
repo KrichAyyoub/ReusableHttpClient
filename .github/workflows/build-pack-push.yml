@@ -20,7 +20,7 @@ jobs:
     - name: Build
       run: dotnet build --no-restore --configuration Release ./StupidHttpClient/StupidHttpClient/StupidHttpClient.csproj
     - name: Test
-      run: dotnet test --no-build --configuration Release ./StupidHttpClient/StupidHttpClient/StupidHttpClient.csproj
+      run: dotnet test --no-build --configuration Release ./StupidHttpClient/StupidHttpClient.Tests/StupidHttpClient.Tests.csproj
     - name: Pack
       run: dotnet pack ./StupidHttpClient/StupidHttpClient/StupidHttpClient.csproj --no-build --configuration Release --output ./StupidHttpClient/StupidHttpClient/bin/Release /p:PackageVersion=1.0.${{ github.run_number }}
     - name: Upload Package
