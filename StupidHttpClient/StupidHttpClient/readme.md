@@ -44,6 +44,8 @@ public interface IStupidHttpClient
     Task<TResponse?> PutAsync<TResult, TResponse>(string relativeRoute, TResult payload);
     Task<string> DeleteAsync(string relativeRoute);
     Task<string> DeleteAsync<TResult>(string relativeRoute, TResult payload);
+    void ClearAuthorizationHeader(string scheme);
+    void SetAuthorizationHeader(string scheme, string value);
 }
 ```
 
@@ -53,6 +55,13 @@ public interface IStupidHttpClient
 
 ```csharp
 var response = await StupidHttpClient.GetAsync<MyResponseModel>("/api/data");
+```
+
+With query parameters:
+
+```csharp
+var queryParams = new Dictionary<string, string> { { "id", "123" } };
+var response = await StupidHttpClient.GetAsync<MyResponseModel>("/api/data", queryParams);
 ```
 
 ### POST Request
@@ -80,6 +89,20 @@ await StupidHttpClient.PutAsync("/api/data/123", payload);
 
 ```csharp
 await StupidHttpClient.DeleteAsync("/api/data/123");
+```
+
+### ClearAuthorizationHeader
+
+```csharp
+ClearAuthorizationHeader(JwtBearerDefaults.AuthenticationScheme)
+
+```
+
+### SetAuthorizationHeader
+
+```csharp
+SetAuthorizationHeader(JwtBearerDefaults.AuthenticationScheme , "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c")
+
 ```
 
 ## Exception Handling
