@@ -2,6 +2,6 @@
 
 public class TestRequest
 {
-    public string Data { get; set; } = null!;
+    public string Name { get; set; } = null!;
 }
 

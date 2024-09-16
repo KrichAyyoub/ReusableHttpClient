@@ -6,7 +6,6 @@ ServiceProvider services = serviceCollection.BuildServiceProvider();
 
 IStupidHttpClient stupidHttpClient = services.GetRequiredService<IStupidHttpClient>();
 
-
 // GET Async
 List<ObjectDto>? listOfObjects = await stupidHttpClient.GetAsync<List<ObjectDto>>("objects");
 

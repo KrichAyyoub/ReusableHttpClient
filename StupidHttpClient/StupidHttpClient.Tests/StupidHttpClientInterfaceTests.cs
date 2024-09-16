@@ -10,108 +10,165 @@ public class StupidHttpClientInterfaceTests
     }
 
     [Fact]
-    public async Task GetAsync_WithValidResponse_ShouldReturnDeserializedResult()
+    public async Task GetAsync_ShouldReturnResult()
     {
         // Arrange
-        var relativePath = "/test-path";
-        var expectedResponse = new TestResponse { Data = "TestData" };
-
-        _stupidHttpClient.GetAsync<TestResponse>(relativePath)!
-            .Returns(Task.FromResult(expectedResponse));
+        TestResponse expectedResult = new TestResponse { Id = 1, Name = "Test" };
+        _stupidHttpClient.GetAsync<TestResponse>("api/test")!.Returns(Task.FromResult(expectedResult));
 
         // Act
-        var result = await _stupidHttpClient.GetAsync<TestResponse>(relativePath);
+        TestResponse? result = await _stupidHttpClient.GetAsync<TestResponse>("api/test");
 
         // Assert
-        result.Should().NotBeNull();
-        result?.Data.Should().Be(expectedResponse.Data);
-    }
-    
-    [Fact]
-    public async Task PostAsync_WithValidPayload_ShouldReturnResponseBody()
-    {
-        // Arrange
-        var relativePath = "/test-path";
-        var payload = new TestRequest { Data = "TestData" };
-        var expectedResponse = "response body";
-
-        _stupidHttpClient.PostAsync(relativePath, payload)
-            .Returns(Task.FromResult(expectedResponse));
-
-        // Act
-        var result = await _stupidHttpClient.PostAsync(relativePath, payload);
-
-        // Assert
-        result.Should().Be(expectedResponse);
+        result.Should().BeEquivalentTo(expectedResult);
     }
 
     [Fact]
-    public async Task PatchAsync_WithValidPayload_ShouldReturnResponseBody()
+    public async Task PostAsync_ShouldReturnString()
     {
         // Arrange
-        var relativePath = "/test-path";
-        var payload = new TestRequest { Data = "TestData" };
-        var expectedResponse = "patched response";
-
-        _stupidHttpClient.PatchAsync(relativePath, payload)
-            .Returns(Task.FromResult(expectedResponse));
+        TestRequest payload = new TestRequest { Name = "Test" };
+        string expectedResult = "Success";
+        _stupidHttpClient.PostAsync("api/test", payload).Returns(Task.FromResult(expectedResult));
 
         // Act
-        var result = await _stupidHttpClient.PatchAsync(relativePath, payload);
+        string result = await _stupidHttpClient.PostAsync("api/test", payload);
 
         // Assert
-        result.Should().Be(expectedResponse);
+        result.Should().Be(expectedResult);
     }
 
     [Fact]
-    public async Task DeleteAsync_ShouldReturnResponseBody()
+    public async Task PostAsync_WithResponse_ShouldReturnResult()
     {
         // Arrange
-        var relativePath = "/test-path";
-        var expectedResponse = "deleted";
-
-        _stupidHttpClient.DeleteAsync(relativePath)
-            .Returns(Task.FromResult(expectedResponse));
+        TestRequest payload = new TestRequest { Name = "Test" };
+        TestResponse expectedResult = new TestResponse { Id = 1, Name = "Test" };
+        _stupidHttpClient.PostAsync<TestRequest, TestResponse>("api/test", payload)!.Returns(
+            Task.FromResult(expectedResult));
 
         // Act
-        var result = await _stupidHttpClient.DeleteAsync(relativePath);
+        TestResponse? result = await _stupidHttpClient.PostAsync<TestRequest, TestResponse>("api/test", payload);
 
         // Assert
-        result.Should().Be(expectedResponse);
+        result.Should().BeEquivalentTo(expectedResult);
     }
 
     [Fact]
-    public async Task GetAsync_WithHttpRequestException_ShouldThrowSimpleHttpRequestException()
+    public async Task PatchAsync_ShouldReturnString()
     {
         // Arrange
-        var relativePath = "/test-path";
-        var expectedException = new SimpleHttpRequestException(HttpStatusCode.BadRequest, "Network error");
-
-        _stupidHttpClient.GetAsync<TestResponse>(relativePath)
-            .Returns<Task<TestResponse?>>(_ => throw expectedException);
+        TestRequest payload = new TestRequest { Name = "Test" };
+        string expectedResult = "Success";
+        _stupidHttpClient.PatchAsync("api/test", payload).Returns(Task.FromResult(expectedResult));
 
         // Act
-        Func<Task> act = async () => await _stupidHttpClient.GetAsync<TestResponse>(relativePath);
+        string result = await _stupidHttpClient.PatchAsync("api/test", payload);
 
         // Assert
-        await act.Should().ThrowAsync<SimpleHttpRequestException>();
+        result.Should().Be(expectedResult);
     }
 
     [Fact]
-    public async Task PutAsync_WithValidPayload_ShouldReturnResponseBody()
+    public async Task PatchAsync_WithResponse_ShouldReturnResult()
     {
         // Arrange
-        var relativePath = "/test-path";
-        var payload = new TestRequest { Data = "TestData" };
-        var expectedResponse = "put response";
-
-        _stupidHttpClient.PutAsync(relativePath, payload)
-            .Returns(Task.FromResult(expectedResponse));
+        TestRequest payload = new TestRequest { Name = "Test" };
+        TestResponse expectedResult = new TestResponse { Id = 1, Name = "Test" };
+        _stupidHttpClient.PatchAsync<TestRequest, TestResponse>("api/test", payload)!.Returns(
+            Task.FromResult(expectedResult));
 
         // Act
-        var result = await _stupidHttpClient.PutAsync(relativePath, payload);
+        TestResponse? result = await _stupidHttpClient.PatchAsync<TestRequest, TestResponse>("api/test", payload);
 
         // Assert
-        result.Should().Be(expectedResponse);
+        result.Should().BeEquivalentTo(expectedResult);
+    }
+
+    [Fact]
+    public async Task PutAsync_ShouldReturnString()
+    {
+        // Arrange
+        TestRequest payload = new TestRequest { Name = "Test" };
+        string expectedResult = "Success";
+        _stupidHttpClient.PutAsync("api/test", payload).Returns(Task.FromResult(expectedResult));
+
+        // Act
+        string result = await _stupidHttpClient.PutAsync("api/test", payload);
+
+        // Assert
+        result.Should().Be(expectedResult);
+    }
+
+    [Fact]
+    public async Task PutAsync_WithResponse_ShouldReturnResult()
+    {
+        // Arrange
+        TestRequest payload = new TestRequest { Name = "Test" };
+        TestResponse expectedResult = new TestResponse { Id = 1, Name = "Test" };
+        _stupidHttpClient.PutAsync<TestRequest, TestResponse>("api/test", payload)!.Returns(
+            Task.FromResult(expectedResult));
+
+        // Act
+        TestResponse? result = await _stupidHttpClient.PutAsync<TestRequest, TestResponse>("api/test", payload);
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedResult);
+    }
+
+    [Fact]
+    public async Task DeleteAsync_ShouldReturnString()
+    {
+        // Arrange
+        string expectedResult = "Success";
+        _stupidHttpClient.DeleteAsync("api/test").Returns(Task.FromResult(expectedResult));
+
+        // Act
+        string result = await _stupidHttpClient.DeleteAsync("api/test");
+
+        // Assert
+        result.Should().Be(expectedResult);
+    }
+
+    [Fact]
+    public async Task DeleteAsync_WithPayload_ShouldReturnString()
+    {
+        // Arrange
+        TestRequest payload = new TestRequest { Name = "Test" };
+        string expectedResult = "Success";
+        _stupidHttpClient.DeleteAsync("api/test", payload).Returns(Task.FromResult(expectedResult));
+
+        // Act
+        string result = await _stupidHttpClient.DeleteAsync("api/test", payload);
+
+        // Assert
+        result.Should().Be(expectedResult);
+    }
+
+    [Fact]
+    public void ClearAuthorizationHeader_ShouldClearHeader()
+    {
+        // Arrange
+        string scheme = "Bearer";
+
+        // Act
+        _stupidHttpClient.ClearAuthorizationHeader(scheme);
+
+        // Assert
+        _stupidHttpClient.Received(1).ClearAuthorizationHeader(scheme);
+    }
+
+    [Fact]
+    public void SetAuthorizationHeader_ShouldSetHeader()
+    {
+        // Arrange
+        string scheme = "Bearer";
+        string value = "token";
+
+        // Act
+        _stupidHttpClient.SetAuthorizationHeader(scheme, value);
+
+        // Assert
+        _stupidHttpClient.Received(1).SetAuthorizationHeader(scheme, value);
     }
 }

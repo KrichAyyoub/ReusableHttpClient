@@ -2,5 +2,6 @@
 
 public class TestResponse
 {
-    public string Data { get; set; } = null!;
+    public int Id { get; set; }
+    public string Name { get; set; } = null!;
 }
