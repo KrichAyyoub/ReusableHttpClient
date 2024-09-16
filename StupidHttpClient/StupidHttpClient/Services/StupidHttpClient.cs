@@ -1,19 +1,5 @@
 ﻿namespace StupidHttpClient.Services;
 
-public interface IStupidHttpClient
-{
-    Task<TResult?> GetAsync<TResult>(string relativePath);
-    Task<string> PostAsync<TResult>(string relativeRoute, TResult payload);
-    Task<TResponse?> PostAsync<TResult, TResponse>(string relativeRoute, TResult payload);
-    Task<string> PatchAsync<TResult>(string relativeRoute, TResult payload);
-    Task<TResponse?> PatchAsync<TResult, TResponse>(string relativeRoute, TResult payload);
-    
-    Task<string> PutAsync<TResult>(string relativeRoute, TResult payload);
-    Task<TResponse?> PutAsync<TResult, TResponse>(string relativeRoute, TResult payload);
-    Task<string> DeleteAsync(string relativeRoute);
-    Task<string> DeleteAsync<TResult>(string relativeRoute, TResult payload);
-}
-
 public class StupidHttpClient : IStupidHttpClient
 {
     private readonly ILogger<StupidHttpClient> _logger;
@@ -23,36 +9,6 @@ public class StupidHttpClient : IStupidHttpClient
     {
         _logger = logger;
         _httpClient = httpClient;
-    }
-
-    public async Task<TResult?> GetAsync<TResult>(string relativePath, Dictionary<string, string> queryParams)
-    {
-        HttpStatusCode statusCode = HttpStatusCode.OK;
-        string responseBody = string.Empty;
-
-        string? query = GetQueryFromQueryParams(queryParams);
-
-        if (query is not null)
-            relativePath = $"{relativePath}{query}";
-
-        try
-        {
-            HttpResponseMessage response = await _httpClient.GetAsync(relativePath);
-
-            statusCode = response.StatusCode;
-            responseBody = await response.Content.ReadAsStringAsync();
-
-            response.EnsureSuccessStatusCode();
-            string json = await response.Content.ReadAsStringAsync();
-            TResult? result = JsonConvert.DeserializeObject<TResult>(json);
-
-            return result;
-        }
-        catch (HttpRequestException ex)
-        {
-            LogHttpRequestException(ex);
-            throw new SimpleHttpRequestException(statusCode, responseBody);
-        }
     }
 
     public async Task<TResult?> GetAsync<TResult>(string relativePath)
@@ -119,7 +75,7 @@ public class StupidHttpClient : IStupidHttpClient
             responseBody = await response.Content.ReadAsStringAsync();
 
             response.EnsureSuccessStatusCode();
-            
+
             TResponse? result = JsonConvert.DeserializeObject<TResponse>(responseBody);
             return result;
         }
@@ -143,7 +99,7 @@ public class StupidHttpClient : IStupidHttpClient
 
             statusCode = response.StatusCode;
             responseBody = await response.Content.ReadAsStringAsync();
-            
+
             response.EnsureSuccessStatusCode();
             return responseBody;
         }
@@ -266,7 +222,7 @@ public class StupidHttpClient : IStupidHttpClient
             responseBody = await response.Content.ReadAsStringAsync();
 
             response.EnsureSuccessStatusCode();
-            
+
             return responseBody;
         }
         catch (HttpRequestException ex)
@@ -276,25 +232,16 @@ public class StupidHttpClient : IStupidHttpClient
         }
     }
 
-    private static string? GetQueryFromQueryParams(Dictionary<string, string> queryParams)
+    public void ClearAuthorizationHeader(string scheme)
     {
-        if (queryParams.Count == 0)
-            return null;
+        _httpClient.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue(scheme, string.Empty);
+    }
 
-        StringBuilder queryBuilder = new();
-
-        foreach (var item in queryParams.Select((value, index) => new { index, value }))
-        {
-            if (item.index == 0)
-            {
-                queryBuilder.Append($"?{item.value.Key}={item.value.Value}");
-                continue;
-            }
-
-            queryBuilder.Append($"&{item.value.Key}={item.value.Value}");
-        }
-
-        return queryBuilder.Length == 0 ? null : queryBuilder.ToString();
+    public void SetAuthorizationHeader(string scheme, string value)
+    {
+        _httpClient.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue(scheme, value);
     }
 
     private void LogHttpRequestException(HttpRequestException ex)
