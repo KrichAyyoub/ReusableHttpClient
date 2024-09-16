@@ -1,6 +1,4 @@
-﻿using StupidHttpClient.Exceptions;
-
-namespace StupidHttpClient.Services;
+﻿namespace StupidHttpClient.Services;
 
 public interface IStupidHttpClient
 {
@@ -91,7 +89,7 @@ public class StupidHttpClient : IStupidHttpClient
         try
         {
             string json = JsonConvert.SerializeObject(payload);
-            StringContent content = new(json, Encoding.UTF8, "application/json");
+            StringContent content = new(json, Encoding.UTF8, MediaTypes.ApplicationJson);
             HttpResponseMessage response = await _httpClient.PostAsync(relativePath, content);
 
             statusCode = response.StatusCode;
@@ -115,7 +113,7 @@ public class StupidHttpClient : IStupidHttpClient
         try
         {
             string json = JsonConvert.SerializeObject(payload);
-            StringContent content = new(json, Encoding.UTF8, "application/json");
+            StringContent content = new(json, Encoding.UTF8, MediaTypes.ApplicationJson);
             HttpResponseMessage response = await _httpClient.PostAsync(relativePath, content);
 
             statusCode = response.StatusCode;
@@ -141,7 +139,7 @@ public class StupidHttpClient : IStupidHttpClient
         try
         {
             string json = JsonConvert.SerializeObject(payload);
-            StringContent content = new(json, Encoding.UTF8, "application/json");
+            StringContent content = new(json, Encoding.UTF8, MediaTypes.ApplicationJson);
             HttpResponseMessage response = await _httpClient.PatchAsync(relativePath, content);
 
             statusCode = response.StatusCode;
@@ -165,7 +163,7 @@ public class StupidHttpClient : IStupidHttpClient
         try
         {
             string json = JsonConvert.SerializeObject(payload);
-            StringContent content = new(json, Encoding.UTF8, "application/json");
+            StringContent content = new(json, Encoding.UTF8, MediaTypes.ApplicationJson);
             HttpResponseMessage response = await _httpClient.PatchAsync(relativePath, content);
 
             statusCode = response.StatusCode;
@@ -190,7 +188,7 @@ public class StupidHttpClient : IStupidHttpClient
         try
         {
             string json = JsonConvert.SerializeObject(payload);
-            StringContent content = new(json, Encoding.UTF8, "application/json");
+            StringContent content = new(json, Encoding.UTF8, MediaTypes.ApplicationJson);
             HttpResponseMessage response = await _httpClient.PutAsync(relativePath, content);
 
             statusCode = response.StatusCode;
@@ -214,7 +212,7 @@ public class StupidHttpClient : IStupidHttpClient
         try
         {
             string json = JsonConvert.SerializeObject(payload);
-            StringContent content = new(json, Encoding.UTF8, "application/json");
+            StringContent content = new(json, Encoding.UTF8, MediaTypes.ApplicationJson);
             HttpResponseMessage response = await _httpClient.PutAsync(relativePath, content);
 
             statusCode = response.StatusCode;
@@ -262,7 +260,7 @@ public class StupidHttpClient : IStupidHttpClient
         try
         {
             string json = JsonConvert.SerializeObject(payload);
-            StringContent content = new(json, Encoding.UTF8, "application/json");
+            StringContent content = new(json, Encoding.UTF8, MediaTypes.ApplicationJson);
             HttpResponseMessage response = await _httpClient.PutAsync(relativePath, content);
 
             statusCode = response.StatusCode;
