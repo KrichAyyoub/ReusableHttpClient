@@ -36,14 +36,14 @@ services.AddStupidHttpClient(baseAddress:"https://api.restful-api.dev");
 public interface IStupidHttpClient
 {
     Task<TResult?> GetAsync<TResult>(string relativePath);
-    Task<string> PostAsync<TResult>(string relativeRoute, TResult payload);
-    Task<TResponse?> PostAsync<TResult, TResponse>(string relativeRoute, TResult payload);
-    Task<string> PatchAsync<TResult>(string relativeRoute, TResult payload);
-    Task<TResponse?> PatchAsync<TResult, TResponse>(string relativeRoute, TResult payload);
-    Task<string> PutAsync<TResult>(string relativeRoute, TResult payload);
-    Task<TResponse?> PutAsync<TResult, TResponse>(string relativeRoute, TResult payload);
-    Task<string> DeleteAsync(string relativeRoute);
-    Task<string> DeleteAsync<TResult>(string relativeRoute, TResult payload);
+    Task<string> PostAsync<TResult>(string relativePath, TResult payload);
+    Task<TResponse?> PostAsync<TResult, TResponse>(string relativePath, TResult payload);
+    Task<string> PatchAsync<TResult>(string relativePath, TResult payload);
+    Task<TResponse?> PatchAsync<TResult, TResponse>(string relativePath, TResult payload);
+    Task<string> PutAsync<TResult>(string relativePath, TResult payload);
+    Task<TResponse?> PutAsync<TResult, TResponse>(string relativePath, TResult payload);
+    Task<string> DeleteAsync(string relativePath);
+    Task<string> DeleteAsync<TResult>(string relativePath, TResult payload);
     void ClearAuthorizationHeader(string scheme);
     void SetAuthorizationHeader(string scheme, string value);
 }
