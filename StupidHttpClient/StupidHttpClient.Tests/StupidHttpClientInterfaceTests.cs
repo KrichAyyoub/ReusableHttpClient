@@ -26,26 +26,7 @@ public class StupidHttpClientInterfaceTests
         result.Should().NotBeNull();
         result?.Data.Should().Be(expectedResponse.Data);
     }
-
-    [Fact]
-    public async Task GetAsync_WithQueryParams_ShouldReturnResult()
-    {
-        // Arrange
-        var relativePath = "/test-path";
-        var queryParams = new Dictionary<string, string> { { "key", "value" } };
-        var expectedResponse = new TestResponse { Data = "TestData" };
-
-        _stupidHttpClient.GetAsync<TestResponse>(relativePath, queryParams)!
-            .Returns(Task.FromResult(expectedResponse));
-
-        // Act
-        var result = await _stupidHttpClient.GetAsync<TestResponse>(relativePath, queryParams);
-
-        // Assert
-        result.Should().NotBeNull();
-        result?.Data.Should().Be(expectedResponse.Data);
-    }
-
+    
     [Fact]
     public async Task PostAsync_WithValidPayload_ShouldReturnResponseBody()
     {

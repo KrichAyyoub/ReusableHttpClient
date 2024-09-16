@@ -35,7 +35,6 @@ services.AddStupidHttpClient(baseAddress:"https://api.dev");
 ```csharp
 public interface IStupidHttpClient
 {
-    Task<TResult?> GetAsync<TResult>(string relativePath, Dictionary<string, string> queryParams);
     Task<TResult?> GetAsync<TResult>(string relativePath);
     Task<string> PostAsync<TResult>(string relativeRoute, TResult payload);
     Task<TResponse?> PostAsync<TResult, TResponse>(string relativeRoute, TResult payload);
