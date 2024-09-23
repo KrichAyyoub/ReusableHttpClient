@@ -3,76 +3,62 @@
 using ReusableHttpClient.Exceptions;
 
 ServiceCollection serviceCollection = new ServiceCollection();
-serviceCollection.AddReusableHttpClient("https://api.restful-api.dev");
+serviceCollection.AddReusableHttpClient("https://jsonplaceholder.typicode.com");
 ServiceProvider services = serviceCollection.BuildServiceProvider();
 
-IReusableHttpClient stupidHttpClient = services.GetRequiredService<IReusableHttpClient>();
+IReusableHttpClient reusableHttpClient = services.GetRequiredService<IReusableHttpClient>();
 
 // GET Async
-try
-{
-    List<ObjectDto>? listOfObjects = await stupidHttpClient.GetAsync<List<ObjectDto>>("objects");
-    Console.WriteLine($"{nameof(listOfObjects)} : {JsonConvert.SerializeObject(listOfObjects)}");
-}
-catch (SimpleHttpRequestException ex)
-{
-    Console.WriteLine(ex);
-    throw;
-}
+List<PostDto>? listOfObjects = await reusableHttpClient.GetAsync<List<PostDto>>("posts");
+Console.WriteLine($"{nameof(listOfObjects)} : {JsonConvert.SerializeObject(listOfObjects)}");
 
 
 // GET Async by id 
 
-ObjectDto? resultById = await stupidHttpClient.GetAsync<ObjectDto>("https://api.restful-api.dev/objects/7");
+PostDto? resultById = await reusableHttpClient.GetAsync<PostDto>("posts/1");
 
 Console.WriteLine($"{nameof(resultById)} : {JsonConvert.SerializeObject(resultById)}");
 
 // Post Async
 
-ObjectDto payload = new ObjectDto()
+PostPayload payload = new()
 {
-    Name = "Apple MacBook Pro 16",
-    Data = new Data()
-    {
-        Color = "White",
-        Capacity = "255MB"
-    }
+    Title = "Hello World!",
+    Body = "lorem ipsum dolor sit amet",
+    UserId = 1
 };
 
-ObjectDto? postResult = await stupidHttpClient.PostAsync<ObjectDto , ObjectDto>("objects", payload);
+PostDto? postResult = await reusableHttpClient.PostAsync<PostPayload, PostDto>("posts", payload);
 Console.WriteLine($"{nameof(postResult)} : : {JsonConvert.SerializeObject(postResult)}");
 
-ObjectDto? createdObject = await stupidHttpClient.GetAsync<ObjectDto>($"https://api.restful-api.dev/objects/{postResult?.Id}");
+PostDto? createdObject =
+    await reusableHttpClient.GetAsync<PostDto>($"posts/1");
 
 Console.WriteLine($"{nameof(createdObject)} : {JsonConvert.SerializeObject(createdObject)}");
 
 // PUT Async
 
-ObjectDto putPayload = new ObjectDto()
+PostDto putPayload = new PostDto()
 {
-    Name = "Apple MacBook Pro 15",
-    Data = new Data()
-    {
-        Color = "Black",
-        Capacity = "256MB"
-    }
+    Title = "Hello World V2",
+    Body = "lorem ipsum dolor sit amet",
+    UserId = 1
 };
 
-ObjectDto? putResult = await stupidHttpClient.PutAsync<ObjectDto , ObjectDto>($"objects/{createdObject?.Id}", putPayload);
+PostDto? putResult = await reusableHttpClient.PutAsync<PostDto, PostDto>($"posts/1", putPayload);
 Console.WriteLine($"{nameof(putResult)} : {JsonConvert.SerializeObject(putResult)}");
 
 // Patch Async 
 
-ObjectDto patchPayload = new ObjectDto()
+PostDto patchPayload = new PostDto()
 {
-    Name = "Apple MacBook Pro 200",
+    Title = "hello World V3",
 };
 
-ObjectDto? patchResult = await stupidHttpClient.PatchAsync<ObjectDto , ObjectDto>($"objects/{putResult?.Id}", patchPayload);
+PostDto? patchResult = await reusableHttpClient.PatchAsync<PostDto, PostDto>($"posts/1", patchPayload);
 Console.WriteLine($"{nameof(patchResult)} : {JsonConvert.SerializeObject(patchResult)}");
 
 // Delete Async 
 
-string deleteResult = await stupidHttpClient.DeleteAsync($"objects/{patchResult?.Id}");
+string deleteResult = await reusableHttpClient.DeleteAsync($"posts/1");
 Console.WriteLine($"{nameof(deleteResult)} : {JsonConvert.SerializeObject(deleteResult)}");
-
