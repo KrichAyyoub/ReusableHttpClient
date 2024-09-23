@@ -16,18 +16,18 @@ jobs:
       with:
         dotnet-version: 8.0.x
     - name: Restore dependencies
-      run: dotnet restore ./StupidHttpClient/StupidHttpClient/StupidHttpClient.csproj
+      run: dotnet restore ./ReusableHttpClient/ReusableHttpClient/ReusableHttpClient.csproj
     - name: Build
-      run: dotnet build --no-restore --configuration Release ./StupidHttpClient/StupidHttpClient/StupidHttpClient.csproj
+      run: dotnet build --no-restore --configuration Release ./ReusableHttpClient/ReusableHttpClient/ReusableHttpClient.csproj
     - name: Test
-      run: dotnet test --no-build --configuration Release ./StupidHttpClient/StupidHttpClient/StupidHttpClient.csproj
+      run: dotnet test --no-build --configuration Release ./ReusableHttpClient/ReusableHttpClient/ReusableHttpClient.csproj
     - name: Pack
-      run: dotnet pack ./StupidHttpClient/StupidHttpClient/StupidHttpClient.csproj --no-build --configuration Release --output ./StupidHttpClient/StupidHttpClient/bin/Release /p:PackageVersion=1.0.${{ github.run_number }}
+      run: dotnet pack ./ReusableHttpClient/ReusableHttpClient/ReusableHttpClient.csproj --no-build --configuration Release --output ./ReusableHttpClient/ReusableHttpClient/bin/Release /p:PackageVersion=1.0.${{ github.run_number }}
     - name: Upload Package
       uses: actions/upload-artifact@v4
       with:
         name: nuget-package
-        path: ./StupidHttpClient/StupidHttpClient/bin/Release/*.nupkg
+        path: ./ReusableHttpClient/ReusableHttpClient/bin/Release/*.nupkg
     - name: Save Version
       run: echo "PACKAGE_VERSION=1.0.${{ github.run_number }}" > version.txt
     - name: Upload Version
@@ -46,7 +46,7 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: nuget-package
-        path: ./StupidHttpClient/StupidHttpClient/bin/Release
+        path: ./ReusableHttpClient/ReusableHttpClient/bin/Release
     - name: Download Version
       uses: actions/download-artifact@v4
       with:
@@ -56,6 +56,6 @@ jobs:
       id: read_version
       run: echo "PACKAGE_VERSION=$(cat version.txt | cut -d '=' -f 2)" >> $GITHUB_ENV
     - name: Push NuGet package
-      run: dotnet nuget push ./StupidHttpClient/StupidHttpClient/bin/Release/StupidHttpClient.${{ env.PACKAGE_VERSION }}.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+      run: dotnet nuget push ./ReusableHttpClient/ReusableHttpClient/bin/Release/ReusableHttpClient.${{ env.PACKAGE_VERSION }}.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
