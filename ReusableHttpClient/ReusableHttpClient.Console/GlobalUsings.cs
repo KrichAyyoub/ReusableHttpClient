@@ -3,5 +3,5 @@
 global using Microsoft.Extensions.DependencyInjection;
 global using Newtonsoft.Json;
 global using ReusableHttpClient.Console.Models;
-global using StupidHttpClient.Extensions;
-global using StupidHttpClient.Services.Abstractions;
+global using ReusableHttpClient.Extensions;
+global using ReusableHttpClient.Services.Abstractions;
