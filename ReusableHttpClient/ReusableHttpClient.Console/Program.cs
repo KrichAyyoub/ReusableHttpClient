@@ -1,15 +1,25 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using ReusableHttpClient.Exceptions;
+
 ServiceCollection serviceCollection = new ServiceCollection();
-serviceCollection.AddStupidHttpClient("https://api.restful-api.dev");
+serviceCollection.AddReusableHttpClient("https://api.restful-api.dev");
 ServiceProvider services = serviceCollection.BuildServiceProvider();
 
-IStupidHttpClient stupidHttpClient = services.GetRequiredService<IStupidHttpClient>();
+IReusableHttpClient stupidHttpClient = services.GetRequiredService<IReusableHttpClient>();
 
 // GET Async
-List<ObjectDto>? listOfObjects = await stupidHttpClient.GetAsync<List<ObjectDto>>("objects");
+try
+{
+    List<ObjectDto>? listOfObjects = await stupidHttpClient.GetAsync<List<ObjectDto>>("objects");
+    Console.WriteLine($"{nameof(listOfObjects)} : {JsonConvert.SerializeObject(listOfObjects)}");
+}
+catch (SimpleHttpRequestException ex)
+{
+    Console.WriteLine(ex);
+    throw;
+}
 
-Console.WriteLine($"{nameof(listOfObjects)} : {JsonConvert.SerializeObject(listOfObjects)}");
 
 // GET Async by id 
 
