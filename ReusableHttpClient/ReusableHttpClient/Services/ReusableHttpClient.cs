@@ -3,11 +3,14 @@
 public class ReusableHttpClient : IReusableHttpClient
 {
     private readonly ILogger<ReusableHttpClient> _logger;
-    private readonly HttpClient _httpClient;
+    private readonly IHttpClientFactory _httpClientFactory;
+    private HttpClient _httpClient;
 
-    public ReusableHttpClient(ILogger<ReusableHttpClient> logger, HttpClient httpClient)
+    public ReusableHttpClient(ILogger<ReusableHttpClient> logger,
+        IHttpClientFactory httpClientFactory, HttpClient httpClient)
     {
         _logger = logger;
+        _httpClientFactory = httpClientFactory;
         _httpClient = httpClient;
     }
 
@@ -230,6 +233,12 @@ public class ReusableHttpClient : IReusableHttpClient
             LogHttpRequestException(ex);
             throw new SimpleHttpRequestException(statusCode, responseBody);
         }
+    }
+
+    public void SetDefaultHttpClient(string clientName)
+    {
+        _httpClient.Dispose();
+        _httpClient = _httpClientFactory.CreateClient(clientName);
     }
 
     public void ClearAuthorizationHeader(string scheme)
