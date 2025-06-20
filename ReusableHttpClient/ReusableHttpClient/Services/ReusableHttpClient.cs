@@ -63,6 +63,28 @@ public class ReusableHttpClient : IReusableHttpClient
         }
     }
 
+    public async Task<string> PostAsync(string relativePath)
+    {
+        HttpStatusCode statusCode = HttpStatusCode.OK;
+        string responseBody = string.Empty;
+
+        try
+        {
+            HttpResponseMessage response = await _httpClient.PostAsync(relativePath, default);
+
+            statusCode = response.StatusCode;
+            responseBody = await response.Content.ReadAsStringAsync();
+
+            response.EnsureSuccessStatusCode();
+            return responseBody;
+        }
+        catch (HttpRequestException ex)
+        {
+            LogHttpRequestException(ex);
+            throw new SimpleHttpRequestException(statusCode, responseBody);
+        }
+    }
+
     public async Task<TResponse?> PostAsync<TResult, TResponse>(string relativePath, TResult payload)
     {
         HttpStatusCode statusCode = HttpStatusCode.OK;

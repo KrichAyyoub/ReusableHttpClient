@@ -4,6 +4,7 @@ public interface IReusableHttpClient
 {
     Task<TResult?> GetAsync<TResult>(string relativePath);
     Task<string> PostAsync<TResult>(string relativePath, TResult payload);
+    Task<string> PostAsync(string relativePath);
     Task<TResponse?> PostAsync<TResult, TResponse>(string relativePath, TResult payload);
     Task<string> PatchAsync<TResult>(string relativePath, TResult payload);
     Task<TResponse?> PatchAsync<TResult, TResponse>(string relativePath, TResult payload);

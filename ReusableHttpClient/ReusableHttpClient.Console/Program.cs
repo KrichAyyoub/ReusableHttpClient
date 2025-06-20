@@ -1,16 +1,21 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-using ReusableHttpClient.Exceptions;
-
-ServiceCollection serviceCollection = new ServiceCollection();
-serviceCollection.AddReusableHttpClient("https://jsonplaceholder.typicode.com");
+﻿ServiceCollection serviceCollection = new ServiceCollection();
+serviceCollection.AddReusableHttpClient("Default", "https://jsonplaceholder.typicode.com");
+serviceCollection.AddReusableHttpClient("evilinsult", "https://evilinsult.com");
 ServiceProvider services = serviceCollection.BuildServiceProvider();
 
 IReusableHttpClient reusableHttpClient = services.GetRequiredService<IReusableHttpClient>();
 
+// get insults 
+
+reusableHttpClient.SetDefaultHttpClient("evilinsult");
+InsultDto insult = await reusableHttpClient.GetAsync<InsultDto>("/generate_insult.php?lang=fr&type=json");
+Console.WriteLine($"{nameof(insult)} : {JsonConvert.SerializeObject(insult)}");
+
+reusableHttpClient.SetDefaultHttpClient("Default");
+
 // GET Async
 List<PostDto>? listOfObjects = await reusableHttpClient.GetAsync<List<PostDto>>("posts");
-Console.WriteLine($"{nameof(listOfObjects)} : {JsonConvert.SerializeObject(listOfObjects)}");
+// Console.WriteLine($"{nameof(listOfObjects)} : {JsonConvert.SerializeObject(listOfObjects)}");
 
 
 // GET Async by id 
