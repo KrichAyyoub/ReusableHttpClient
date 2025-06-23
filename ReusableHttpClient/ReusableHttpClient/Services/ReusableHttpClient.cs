@@ -257,6 +257,11 @@ public class ReusableHttpClient : IReusableHttpClient
         }
     }
 
+    public void AddHeaderKeyValue(string name, string value)
+    {
+        _httpClient.DefaultRequestHeaders.Add(name, value);
+    }
+
     public void SetDefaultHttpClient(string clientName)
     {
         _httpClient.Dispose();

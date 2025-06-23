@@ -14,5 +14,6 @@ public interface IReusableHttpClient
     Task<string> DeleteAsync<TResult>(string relativePath, TResult payload);
     public void ClearAuthorizationHeader(string scheme);
     public void SetAuthorizationHeader(string scheme, string value);
+    public void AddHeaderKeyValue(string name, string value);
     void SetDefaultHttpClient(string clientName);
 }
